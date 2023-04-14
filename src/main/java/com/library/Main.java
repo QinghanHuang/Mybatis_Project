@@ -17,7 +17,9 @@ import java.util.logging.LogManager;
  * 6.1配置日志,使用properties
  * 6.2在main中使用logManager读取log配置
  * 6.3使用lombok log注解 开启注解
- * 7.
+ * 7.完成业务逻辑
+ * 8.打包
+ * 8.1 在pom中添加打包插件plugin
  */
 
 
@@ -42,7 +44,7 @@ public class Main {
                 try {
                     input = scanner.nextInt();
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    System.out.println("Bye!Bye!");
                     return;
                 }
                 scanner.nextLine();
