@@ -1,47 +1,80 @@
 package com.library;
 
-import com.library.entity.Book;
-import com.library.entity.Student;
-import com.library.mapper.Mapper;
-import com.library.utils.SqlUntil;
-import org.apache.ibatis.session.SqlSession;
+import com.library.service.Service;
+import org.apache.ibatis.io.Resources;
 
+import java.io.IOException;
 import java.util.Scanner;
+import java.util.logging.LogManager;
 
 /**
  * 1.导入dependency,设置mybatis-config(连接数据库)
  * 2.在数据库新建表格,在entity新建对应的类
  * 3.创建mapper接口,写实现sql的方法和注解,将mapper 添加到mybatis-config
+ * 4.在sqlUtil里添加getSession或者doSql的方法(可以使用consumer传入mapper函数式编程)
+ * 5.在主页面点用sqlUtil执行数据库操作
+ * 6.添加日志系统
+ * 6.1配置日志,使用properties
+ * 6.2在main中使用logManager读取log配置
+ * 6.3使用lombok log注解 开启注解
+ * 7.
  */
+
+
 public class Main {
     public static void main(String[] args) {
         try (Scanner scanner = new Scanner(System.in)) {
+
+            LogManager logManager = LogManager.getLogManager();
+            logManager.readConfiguration(Resources.getResourceAsStream("logging.properties"));
+
+
             while (true) {
                 System.out.println("==============================");
                 System.out.println("1. Input Student Info");
                 System.out.println("2. Input Book Info");
+                System.out.println("3. Input Borrow Info");
+                System.out.println("4. Show All Students Info");
+                System.out.println("5. Show All Books Info");
+                System.out.println("6. Show All Borrow Info");
                 System.out.print("Please Input Index to operate(other key to exit): ");
                 int input;
                 try {
                     input = scanner.nextInt();
-                    scanner.nextLine();
-                    switch (input) {
-                        case 1:
-                            addStudent(scanner);
-                            break;
-                        case 2:
-                            break;
-                        default:
-                            System.out.println("Exit,ByeBye!");
-                            return;
-                    }
                 } catch (Exception e) {
                     e.printStackTrace();
                     return;
                 }
+                scanner.nextLine();
+                switch (input) {
+                    case 1:
+                        Service.addStudent(scanner);
+                        break;
+                    case 2:
+                        Service.addBook(scanner);
+                        break;
+                    case 3:
+                        Service.addBorrow(scanner);
+                        break;
+                    case 4:
+                        Service.showStudentInfo();
+                        break;
+                    case 5:
+                        Service.showBookInfo();
+                        break;
+                    case 6:
+                        Service.showBorrowInfo();
+                        break;
+
+                    default:
+                        System.out.println("Exit,ByeBye!");
+                        return;
+                }
 
             }
 
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
 
 
@@ -58,25 +91,8 @@ public class Main {
 //        System.out.println(i1);
 
     }
-    private static void  addStudent(Scanner scanner){
 
-        System.out.print("Please input the Name of student: ");
-        String name=scanner.nextLine();
 
-        System.out.print("Please input the Sex of student(male/female): ");
-        String sex = scanner.nextLine();
 
-        System.out.print("Please input the Grade of student(1/2/3): ");
-        String grade = scanner.nextLine();
 
-        Student student=new Student(grade,name,sex);
-        SqlUntil.doSqlWork(mapper -> {
-            int i = mapper.addStudent(student);
-            if(i>0){
-                System.out.println("Student input success!");
-            }else {
-                System.out.println("Student input failed!");
-            }
-        });
-    }
 }

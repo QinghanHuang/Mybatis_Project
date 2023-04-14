@@ -4,10 +4,16 @@ import lombok.*;
 
 @Data
 //@AllArgsConstructor
-//@NoArgsConstructor
+@NoArgsConstructor
 public class Student {
     private int sid;
-    private final String grade;
-    private final String sname;
-    private final String sex;
+    private String grade;
+    private String sName;
+    private String sex;
+
+    public Student(String grade, String sName, String sex) {
+        this.grade = grade;
+        this.sName = sName;
+        this.sex = sex;
+    }
 }

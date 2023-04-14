@@ -7,7 +7,7 @@ import org.apache.ibatis.session.*;
 import java.io.*;
 import java.util.function.Consumer;
 
-public class SqlUntil {
+public class SqlUtil {
     //在类加载时就进行创建
     private static SqlSessionFactory sqlSessionFactory;
     static {
